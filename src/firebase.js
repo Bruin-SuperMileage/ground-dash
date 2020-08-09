@@ -1,4 +1,4 @@
-import {apiKeyHidden} from './config';
+//import {apiKeyHidden} from './config';
 import firebase from 'firebase';
 
 // Set the configuration for your app
@@ -6,7 +6,7 @@ import firebase from 'firebase';
 
 var config = {
   // apiKey: "AIzaSyAnFTWZTgWEugKOSUM6WY_NkxrPzRzn6dU",
-  apiKey: apiKeyHidden,
+  apiKey: "AIzaSyAnFTWZTgWEugKOSUM6WY_NkxrPzRzn6dU",
   authDomain: "bruin-racing.firebaseapp.com",
   databaseURL: "https://bruin-racing.firebaseio.com",
   projectId: "bruin-racing",

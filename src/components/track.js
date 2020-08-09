@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Weather from './weather';
+//import Weather from './weather';
 import Lap from './lap';
 import GPS from './gps';
 import Controls from './controls';
@@ -18,9 +18,9 @@ class Track extends React.Component{
                          </div>
                          <GPS gps={this.props.gps}/>
                     </div>
-                    <div className="column">
+                    {/* <div className="column">
                          <Weather weather={this.props.weather}/>
-                    </div>
+                    </div> */}
                </div>
                <Lap lap={this.props.lap}/>
                <div className="card-image">

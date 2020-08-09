@@ -28,7 +28,7 @@ class App extends React.Component {
       motor: {},
       speed: {},
       track: {},
-      weather: {},
+      //weather: {},
     };
   }
 
@@ -36,7 +36,7 @@ class App extends React.Component {
     let database = firebase.database();
 
     //sets the time
-    database.ref("Previous Time").on('value', (snapshot) => {
+    database.ref("Latest Time").on('value', (snapshot) => {
       var latestTime1 = snapshot.val();
 
       //sets the trial
@@ -55,7 +55,7 @@ class App extends React.Component {
           var motor = latestData1["motor"]
           var speed = latestData1["speed"]
           var track = latestData1["track"]
-          var weather = latestData1["weather"]
+          //var weather = latestData1["weather"]
 
           this.setState({
             latestData: latestData1,
@@ -67,7 +67,7 @@ class App extends React.Component {
             motor: motor,
             speed: speed,
             track: track,
-            weather: weather,
+            //weather: weather,
           })
         });
   
@@ -93,7 +93,7 @@ class App extends React.Component {
             <Car battery={this.state.battery} motor={this.state.motor} joulemeter={this.state.joulemeter} speed={this.state.speed} />
            </div>
           <div className="column">
-            <Track gps={this.state.gps} weather={this.state.weather} lap={this.state.lap} track={this.state.track} />
+            <Track gps={this.state.gps} /*weather={this.state.weather}*/ lap={this.state.lap} track={this.state.track} />
           
           </div>
         </div>
