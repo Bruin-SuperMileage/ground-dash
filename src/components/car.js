@@ -2,6 +2,7 @@ import React from 'react';
 
 import Motor from './motor';
 import Battery from './battery';
+import Imu from './imu';
 import Joulemeter from './joulemeter';
 import Speed from './speed';
 
@@ -19,6 +20,7 @@ class Car extends React.Component{
                     <div className="column">
                          <Speed speed={this.props.speed} />
                          <Motor motor={this.props.motor}/>
+                         <Imu imu={this.props.imu}/>
                     </div>
                </div>
           </div>

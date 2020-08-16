@@ -23,6 +23,7 @@ class App extends React.Component {
       battery: {},
       driver: {},            
       gps: {},
+      imu: {},
       joulemeter: {},
       lap: {},
       motor: {},
@@ -50,6 +51,7 @@ class App extends React.Component {
           var battery = latestData1["battery"]
           var driver = latestData1["driver"]
           var gps = latestData1["gps"]
+          var imu = latestData1["IMU"]
           var joulemeter = latestData1["joulemeter"]
           var lap = latestData1["lap"]
           var motor = latestData1["motor"]
@@ -62,6 +64,7 @@ class App extends React.Component {
             battery: battery,
             driver: driver,
             gps: gps,
+            imu: imu,
             joulemeter: joulemeter,
             lap: lap,
             motor: motor,
@@ -90,11 +93,10 @@ class App extends React.Component {
         <div className="columns">
           <div className="column">  
             <Driver driver={this.state.driver} />          
-            <Car battery={this.state.battery} motor={this.state.motor} joulemeter={this.state.joulemeter} speed={this.state.speed} />
+            <Car battery={this.state.battery} motor={this.state.motor} imu={this.state.imu} joulemeter={this.state.joulemeter} speed={this.state.speed} />
            </div>
           <div className="column">
-            <Track gps={this.state.gps} /*weather={this.state.weather}*/ lap={this.state.lap} track={this.state.track} />
-          
+            <Track gps={this.state.gps} /*weather={this.state.weather}*/ lap={this.state.lap} track={this.state.track} /> 
           </div>
         </div>
       </div>
