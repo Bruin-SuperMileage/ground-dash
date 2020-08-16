@@ -12,9 +12,9 @@ class Joulemeter extends React.Component{
                     <p className="subtitle is-6">Avg Efficiency: {this.props.joulemeter.avg} mi/kWh</p>
                     <p className="subtitle is-6">Peak Efficiency: {this.props.joulemeter.peak} mi/kWh</p>
                     <p className="subtitle is-6">Altitude: {this.props.joulemeter.Altitude} </p>
-                    <p className="subtitle is-6">GyX: {this.props.joulemeter.GyX}</p>
-                    <p className="subtitle is-6">GyY: {this.props.joulemeter.GyY}</p>
-                    <p className="subtitle is-6">GyZ: {this.props.joulemeter.GyZ}</p>
+                    <p className="subtitle is-6">GyX: {this.props.joulemeter.GyX}°</p>
+                    <p className="subtitle is-6">GyY: {this.props.joulemeter.GyY}°</p>
+                    <p className="subtitle is-6">GyZ: {this.props.joulemeter.GyZ}°</p>
                </div>
           </div>
         );

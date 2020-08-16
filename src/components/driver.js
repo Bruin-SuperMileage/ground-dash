@@ -24,7 +24,7 @@ class Driver extends React.Component{
                </div>
 
                <div className="column">
-                    <img className="car-image is-pulled-right" src="./public/images/car.png" alt=""/>  
+                    <img className="car-image is-pulled-right" src="./images/car.png" alt=""/>  
                </div>
                </div>
           </div>
