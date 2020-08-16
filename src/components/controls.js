@@ -4,6 +4,7 @@ import firebase from '../firebase.js'
 var latestTime1 = "";
 var latestTime2 = "";
 var latestTime3 = [];
+
 class Controls extends React.Component{
 
     constructor(props) {
@@ -17,19 +18,24 @@ class Controls extends React.Component{
     }
 
     lap() {
-        var lap = 0;
-
+        var lap;
         let database = firebase.database();
-        database.ref("Lap").on('value', (snapshot) => {
-            lap = snapshot.val();
+        var latestTime;
+        var latestTrial;
+        database.ref("Latest Time").on('value', (snapshot) => {
+            latestTime = snapshot.val();
         });
-       
-        var postData = lap+1;
-
+        database.ref("Latest Trial").on('value', (snapshot) => {
+            latestTrial = snapshot.val();
+        });   
+        database.ref(latestTrial + "/" + latestTime + "/lap").on('value', (snapshot) => {
+            lap = snapshot.val();
+        });   
+        var postData = lap.current+1;
         var updates = {};
-        updates["Lap"] = postData;
+        updates["current"] = postData;
 
-        firebase.database().ref().update(updates);
+        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
 
         latestTime3.push(this.getTime());
 
@@ -39,13 +45,19 @@ class Controls extends React.Component{
     }
 
     start() {
+        let database = firebase.database();
+        var latestTime;
+        var latestTrial;
+        database.ref("Latest Time").on('value', (snapshot) => {
+            latestTime = snapshot.val();
+        });
+        database.ref("Latest Trial").on('value', (snapshot) => {
+            latestTrial = snapshot.val();
+        });    
         var postData = "True";
-        
         var updates = {};
-        updates["Running"] = postData;
-
-        firebase.database().ref().update(updates);
-
+        updates["running"] = postData;
+        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
         latestTime1 = this.getTime();
         latestTime2 = "";
         latestTime3 = [];
@@ -54,13 +66,21 @@ class Controls extends React.Component{
     }
 
     stop() {
+        let database = firebase.database();
+        var latestTime;
+        var latestTrial;
+        database.ref("Latest Time").on('value', (snapshot) => {
+            latestTime = snapshot.val();
+        });
+        database.ref("Latest Trial").on('value', (snapshot) => {
+            latestTrial = snapshot.val();
+        });   
         var postData = "False";
-        
         var updates = {};
-        updates["Running"] = postData;
-        updates["Lap"] = 0;
+        updates["running"] = postData;
+        updates["current"] = 0;
 
-        firebase.database().ref().update(updates);
+        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
 
         latestTime2 = this.getTime();
         

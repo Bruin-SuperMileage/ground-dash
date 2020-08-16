@@ -2,7 +2,7 @@
   "name": "dashboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ashvinnagarajan.github.io/dashboard/",
+  "homepage": "https://kensonn.github.io/ground-dash/",
   "dependencies": {
     "bulma": "^0.7.5",
     "chart.js": "^2.9.3",
