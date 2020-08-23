@@ -15,14 +15,6 @@ class Header extends React.Component{
     this.intervalID = setInterval(
       () => this.tick(),
     );
-  }
-  tick() {
-    this.setState({
-      time: new Date().toLocaleTimeString()
-    });
-  }
-
-  componentWillMount() {
     var today = new Date();
     var date1 = today.toDateString();
     var cmas= new Date(2020, 3, 1);
@@ -33,6 +25,26 @@ class Header extends React.Component{
       date: date1,
       daysLeft: daysLeft1
     });
+  }
+
+  tick() {
+    this.setState({
+      time: new Date().toLocaleTimeString()
+    });
+  }
+
+  componentWillMount() {
+  //   var today = new Date();
+  //   var date1 = today.toDateString();
+  //   var cmas= new Date(2020, 3, 1);
+  //   var one_day=1000*60*60*24;
+  //   var daysLeft1 = "Days to Competition: " + (Math.ceil( (cmas.getTime()-today.getTime() )/ one_day ));
+    
+  //   this.setState({
+  //     date: date1,
+  //     daysLeft: daysLeft1
+  //   });
+  // 
   }
 
   render() {

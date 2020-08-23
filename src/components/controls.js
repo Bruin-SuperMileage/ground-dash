@@ -1,9 +1,30 @@
 import React from 'react';
 import firebase from '../firebase.js'
 
-var latestTime1 = "";
-var latestTime2 = "";
-var latestTime3 = [];
+var startTimeMilli = "";
+var convertedStart = "";
+var stopTimeMilli = "";
+var convertedStop = "";
+var lapTimeMilli = [];
+var lapTime = [];
+var convertedLapTimes = [];
+var lap;
+
+Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = "0" + s;}
+    return s;
+  }
+
+function convertTime(milliseconds) {
+    var minute, seconds, milli;
+    seconds = Math.floor(milliseconds / 1000);
+    minute = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    minute = minute % 60;
+    milli = milliseconds % 1000
+    return ((minute).pad(2) + ":" + (seconds).pad(2) + "." + (milli).pad(3))
+}
 
 class Controls extends React.Component{
 
@@ -14,94 +35,64 @@ class Controls extends React.Component{
         this.lap = this.lap.bind(this);
         this.start = this.start.bind(this);
         this.stop = this.stop.bind(this);
-        this.getTime = this.getTime.bind(this);
     }
 
     lap() {
-        var lap;
-        let database = firebase.database();
-        var latestTime;
-        var latestTrial;
-        database.ref("Latest Time").on('value', (snapshot) => {
-            latestTime = snapshot.val();
-        });
-        database.ref("Latest Trial").on('value', (snapshot) => {
-            latestTrial = snapshot.val();
-        });   
-        database.ref(latestTrial + "/" + latestTime + "/lap").on('value', (snapshot) => {
+        let database = firebase.database(); 
+        database.ref("Lap").on('value', (snapshot) => {
             lap = snapshot.val();
-        });   
-        var postData = lap.current+1;
-        var updates = {};
-        updates["current"] = postData;
-
-        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
-
-        latestTime3.push(this.getTime());
-
-        console.log(latestTime3)
-
+            console.log("lap: " + lap)
+        });
+        var updates2 = {};
+        updates2["Lap"] = lap+1;
+        var currentTime = Date.now();
+        lapTimeMilli.push(currentTime);
+        var pushTime;
+        if (lapTimeMilli.length === 1) {
+            pushTime = currentTime - startTimeMilli;
+        }
+        else {
+            pushTime = currentTime - lapTimeMilli[lapTimeMilli.length-2];
+        }
+        console.log(pushTime);
+        lapTime.push(pushTime);
+        updates2["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1
+        updates2["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1
+        convertedLapTimes.push(convertTime(pushTime))
+        firebase.database().ref().update(updates2);
         this.forceUpdate();
     }
 
-    start() {
-        let database = firebase.database();
-        var latestTime;
-        var latestTrial;
-        database.ref("Latest Time").on('value', (snapshot) => {
-            latestTime = snapshot.val();
-        });
-        database.ref("Latest Trial").on('value', (snapshot) => {
-            latestTrial = snapshot.val();
-        });    
+    start() {  
         var postData = "True";
         var updates = {};
-        updates["running"] = postData;
-        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
-        latestTime1 = this.getTime();
-        latestTime2 = "";
-        latestTime3 = [];
-
+        updates["Running"] = postData;
+        updates["Lap"] = 1;
+        firebase.database().ref().update(updates);
+        startTimeMilli = Date.now();
+        var startTime = new Date(startTimeMilli)
+        convertedStart = startTime.getHours() + ":" + startTime.getMinutes() + ":" + startTime.getSeconds()
+        stopTimeMilli = "";
+        convertedStop = "";
+        lapTimeMilli = [];
+        lapTime = [];
+        convertedLapTimes = [];
         this.forceUpdate();
     }
 
     stop() {
-        let database = firebase.database();
-        var latestTime;
-        var latestTrial;
-        database.ref("Latest Time").on('value', (snapshot) => {
-            latestTime = snapshot.val();
-        });
-        database.ref("Latest Trial").on('value', (snapshot) => {
-            latestTrial = snapshot.val();
-        });   
         var postData = "False";
         var updates = {};
-        updates["running"] = postData;
-        updates["current"] = 0;
+        updates["Running"] = postData;
 
-        firebase.database().ref(latestTrial + "/" + latestTime + "/lap").update(updates);
+        firebase.database().ref().update(updates);
 
-        latestTime2 = this.getTime();
-        
+        stopTimeMilli = Date.now();
+        convertedStop = convertTime(stopTimeMilli-startTimeMilli);
         this.forceUpdate();
     }
 
-    getTime() {
-        var today = new Date();
-        var endString = " AM";
-        var hours = today.getHours();
-        if (hours > 12) {
-          hours -= 12;
-          endString = " PM";
-        };
-        var time1 = hours + ":" + today.getMinutes() + ":" + today.getSeconds() + endString;
-
-        return time1;
-    }
-
     render() {
-
         return (
           <div className="controls">
                <div className="card-content">
@@ -110,7 +101,7 @@ class Controls extends React.Component{
                     <button onClick={this.start} className="button is-primary control-button">Start</button>
                     </div>
                     <div className="column">
-                        <p className="title is-5">Time: {latestTime1}</p>
+                        <p className="title is-5">Time: {convertedStart}</p>
                     </div>
                 </div>
                 <hr/>
@@ -119,7 +110,7 @@ class Controls extends React.Component{
                     <button onClick={this.stop} className="button is-danger control-button">Stop</button>
                     </div>
                     <div className="column">
-                        <p className="title is-5">Time: {latestTime2}</p>
+                        <p className="title is-5">Time: {convertedStop}</p>
                     </div>
                 </div>
                 <hr/>
@@ -127,11 +118,13 @@ class Controls extends React.Component{
                     <div className="column is-one-fifth">
                     <button onClick={this.lap} className="button is-info control-button">Lap</button>
                     </div>
-                    <div className="column">
-                        <p className="title is-5">Time: {latestTime3.map(item => {
-                            return <li>{item}</li>;
-                            })}
-                        </p>
+                    <div className="column padding-left">
+                        <ol className="numInside">
+                            <p className="title is-5">Time: {convertedLapTimes.map(item => {
+                                return <li>{item}</li>
+                                })}
+                            </p>
+                        </ol>
                     </div>
                 </div>
                 
