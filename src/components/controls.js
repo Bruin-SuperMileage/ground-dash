@@ -37,18 +37,13 @@ class Controls extends React.Component{
     }
 
     lap() {
-        var latestTime;
         var latestTrial;
         let database = firebase.database(); 
-        database.ref("Latest Time").on('value', (snapshot) => {
-            latestTime = snapshot.val();
-        });
         database.ref("Latest Trial").on('value', (snapshot) => {
             latestTrial = snapshot.val();
         });
         database.ref("Lap").on('value', (snapshot) => {
             lapNumber = snapshot.val();
-            console.log("lap: " + lapNumber)
         });
         var update1 = {};
         update1["Lap"] = lapNumber+1;
@@ -70,7 +65,7 @@ class Controls extends React.Component{
         var lapFirebase = (lapNumber-1);
         var update2 = {};
         update2[lapFirebase] = convertedLapTime;
-        firebase.database().ref(latestTrial + "/" + latestTime + "/lap times").update(update2);
+        firebase.database().ref(latestTrial + "/lap times").update(update2);
         this.forceUpdate();
     }
 
