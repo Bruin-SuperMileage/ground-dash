@@ -6,7 +6,7 @@ class Header extends React.Component{
 
     this.state = {
       date: "",
-      time: new Date().toLocaleTimeString,
+      time: "",
       daysLeft: 0
     };
   }
@@ -33,20 +33,6 @@ class Header extends React.Component{
     });
   }
 
-  componentWillMount() {
-  //   var today = new Date();
-  //   var date1 = today.toDateString();
-  //   var cmas= new Date(2020, 3, 1);
-  //   var one_day=1000*60*60*24;
-  //   var daysLeft1 = "Days to Competition: " + (Math.ceil( (cmas.getTime()-today.getTime() )/ one_day ));
-    
-  //   this.setState({
-  //     date: date1,
-  //     daysLeft: daysLeft1
-  //   });
-  // 
-  }
-
   render() {
     return (
         <nav className="navbar is-fixed-top is-dark color-dark" role="navigation" aria-label="main navigation">
@@ -58,7 +44,7 @@ class Header extends React.Component{
       
         <div className="navbar-end is-hidden-touch">
           <div className="navbar-item">
-            Made by A. Nagarajan
+            Made by A. Nagarajan, Continued by K. Nguyen
           </div>
           <div className="navbar-item">
             {this.state.daysLeft}

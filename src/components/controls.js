@@ -8,7 +8,7 @@ var convertedStop = "";
 var lapTimeMilli = [];
 var lapTime = [];
 var convertedLapTimes = [];
-var lap;
+var lapNumber;
 
 Number.prototype.pad = function(size) {
     var s = String(this);
@@ -27,7 +27,6 @@ function convertTime(milliseconds) {
 }
 
 class Controls extends React.Component{
-
     constructor(props) {
         super(props);
 
@@ -38,13 +37,21 @@ class Controls extends React.Component{
     }
 
     lap() {
+        var latestTime;
+        var latestTrial;
         let database = firebase.database(); 
-        database.ref("Lap").on('value', (snapshot) => {
-            lap = snapshot.val();
-            console.log("lap: " + lap)
+        database.ref("Latest Time").on('value', (snapshot) => {
+            latestTime = snapshot.val();
         });
-        var updates2 = {};
-        updates2["Lap"] = lap+1;
+        database.ref("Latest Trial").on('value', (snapshot) => {
+            latestTrial = snapshot.val();
+        });
+        database.ref("Lap").on('value', (snapshot) => {
+            lapNumber = snapshot.val();
+            console.log("lap: " + lapNumber)
+        });
+        var update1 = {};
+        update1["Lap"] = lapNumber+1;
         var currentTime = Date.now();
         lapTimeMilli.push(currentTime);
         var pushTime;
@@ -54,12 +61,16 @@ class Controls extends React.Component{
         else {
             pushTime = currentTime - lapTimeMilli[lapTimeMilli.length-2];
         }
-        console.log(pushTime);
         lapTime.push(pushTime);
-        updates2["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1
-        updates2["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1
-        convertedLapTimes.push(convertTime(pushTime))
-        firebase.database().ref().update(updates2);
+        update1["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1;
+        update1["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1;
+        var convertedLapTime = convertTime(pushTime);
+        convertedLapTimes.push(convertedLapTime);
+        firebase.database().ref().update(update1);
+        var lapFirebase = (lapNumber-1);
+        var update2 = {};
+        update2[lapFirebase] = convertedLapTime;
+        firebase.database().ref(latestTrial + "/" + latestTime + "/lap times").update(update2);
         this.forceUpdate();
     }
 
@@ -95,43 +106,42 @@ class Controls extends React.Component{
     render() {
         return (
           <div className="controls">
-               <div className="card-content">
-                <div className="columns">
-                    <div className="column is-one-fifth">
-                    <button onClick={this.start} className="button is-primary control-button">Start</button>
+                <div className="card-content">
+                    <div className="columns">
+                        <div className="column is-one-fifth">
+                        <button onClick={this.start} className="button is-primary control-button">Start</button>
+                        </div>
+                        <div className="column">
+                            <p className="title is-5">Time: {convertedStart}</p>
+                        </div>
                     </div>
-                    <div className="column">
-                        <p className="title is-5">Time: {convertedStart}</p>
+                    <hr/>
+                    <div className="columns">
+                        <div className="column is-one-fifth">
+                        <button onClick={this.stop} className="button is-danger control-button">Stop</button>
+                        </div>
+                        <div className="column">
+                            <p className="title is-5">Time: {convertedStop}</p>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="columns">
+                        <div className="column is-one-fifth">
+                        <button onClick={this.lap} className="button is-info control-button">Lap</button>
+                        </div>
+                        <div className="column padding-left">
+                            <ol className="numInside">
+                                <p className="title is-5">Time: {convertedLapTimes.map(item => {
+                                    return <li>{item}</li>
+                                    })}
+                                </p>
+                            </ol>
+                        </div>
                     </div>
                 </div>
-                <hr/>
-                <div className="columns">
-                    <div className="column is-one-fifth">
-                    <button onClick={this.stop} className="button is-danger control-button">Stop</button>
-                    </div>
-                    <div className="column">
-                        <p className="title is-5">Time: {convertedStop}</p>
-                    </div>
-                </div>
-                <hr/>
-                <div className="columns">
-                    <div className="column is-one-fifth">
-                    <button onClick={this.lap} className="button is-info control-button">Lap</button>
-                    </div>
-                    <div className="column padding-left">
-                        <ol className="numInside">
-                            <p className="title is-5">Time: {convertedLapTimes.map(item => {
-                                return <li>{item}</li>
-                                })}
-                            </p>
-                        </ol>
-                    </div>
-                </div>
-                
-               </div>
           </div>
         );
-     }
+    }
 };
 
 export default Controls;

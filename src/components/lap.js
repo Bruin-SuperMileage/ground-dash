@@ -1,4 +1,5 @@
 import React from 'react';
+import firebase from '../firebase.js';
 
 class Lap extends React.Component{
      constructor(props) {
@@ -55,7 +56,6 @@ class Lap extends React.Component{
                timerStart2: Date.now(),
                timerTimeReset: 0,
           });
-          console.log("reset2")
      };
 
      componentDidMount = () => {
@@ -80,7 +80,6 @@ class Lap extends React.Component{
           const {isRunning, lapNumber} = this.state;
           if (isRunning !== this.props.lap["Running"]) {
                if (this.props.lap["Running"] === "True") {
-                    console.log("Starting start")
                     this.startTimer();
                     this.resetTimer();
                     this.setState({
@@ -88,7 +87,6 @@ class Lap extends React.Component{
                     })
                }
                else if (this.props.lap["Running"] === "False") {
-                    console.log("Ending end");
                     this.stopTimer();
                     this.setState({
                          isRunning: "False"
@@ -104,6 +102,19 @@ class Lap extends React.Component{
      }
 
      render() {
+          let latestTime;
+          let latestTrial;
+          let peakTimes = {};
+          let database = firebase.database(); 
+          database.ref("Latest Time").on('value', (snapshot) => {
+              latestTime = snapshot.val();
+          });
+          database.ref("Latest Trial").on('value', (snapshot) => {
+              latestTrial = snapshot.val();
+          });
+          database.ref(latestTrial + "/" + latestTime + "/lap times").on('value', (snapshot) => {
+               peakTimes = snapshot.val();
+          });
           const { timerTime, timerTimeReset } = this.state;
           let centiseconds = ("0" + (Math.floor(timerTimeReset / 10) % 100)).slice(-2);
           let seconds = ("0" + (Math.floor(timerTimeReset / 1000) % 60)).slice(-2);
@@ -120,14 +131,16 @@ class Lap extends React.Component{
                               <p className="title is-6">Lap: {this.props.lap["Lap"]}</p>
                               <p className="subtitle is-6">Lap Time: {minutes}:{seconds}.{centiseconds} </p>
                               <p className="subtitle is-6">Time Remaining: {fourptthreeminutes}:{fourptthreeseconds}.{fourptthreecentiseconds} </p>
-                              {/* <p className="subtitle is-6">Current Lap: {this.props.lap["current"]}</p> */}
-                              {/* <p className="subtitle is-6">Total: {this.props["total"]}</p> */}
                          </div>
                     </div>
                     <div className="column">
                          <div className="card-content">
-                              <p className="subtitle is-6">Slowest Lap: {this.props.lap["Slowest"]}</p>
-                              <p className="subtitle is-6">Fastest Lap: {this.props.lap["Fastest"]}</p>
+                              <p className="subtitle is-6">
+                                   Slowest Lap: {this.props.lap["Slowest"]} {peakTimes[this.props.lap["Slowest"]]}
+                              </p>
+                              <p className="subtitle is-6">
+                                   Fastest Lap: {this.props.lap["Fastest"]} {peakTimes[this.props.lap["Fastest"]]}
+                              </p>
                          </div>
                     </div>
                </div>
