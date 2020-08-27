@@ -125,11 +125,8 @@ class Lap extends React.Component{
           let fastestTime = "";
           if (exists === true) {
                slowestTime = peakTimes[this.props.lap["Slowest"]];
-               console.log("if")
                fastestTime = peakTimes[this.props.lap["Fastest"]];
           }
-          else
-               console.log("else")
           const { timerTime, timerTimeReset } = this.state;
           let centiseconds = ("0" + (Math.floor(timerTimeReset / 10) % 100)).slice(-2);
           let seconds = ("0" + (Math.floor(timerTimeReset / 1000) % 60)).slice(-2);
