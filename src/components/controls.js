@@ -74,6 +74,8 @@ class Controls extends React.Component{
         var updates = {};
         updates["Running"] = postData;
         updates["Lap"] = 1;
+        updates["Fastest"] = 0;
+        updates["Slowest"] = 0;
         firebase.database().ref().update(updates);
         startTimeMilli = Date.now();
         var startTime = new Date(startTimeMilli)
