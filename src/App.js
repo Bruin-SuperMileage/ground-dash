@@ -72,7 +72,6 @@ class App extends React.Component {
           let motor;
           let speed;
           if (exists === true) {
-            console.log("if");
             latestData1 = snapshot.val();
             accelerometer = latestData1["accelerometer"];
             battery = latestData1["battery"];
@@ -88,7 +87,6 @@ class App extends React.Component {
             speed = latestData1["speed"];
           }
           else {
-            console.log("else");
             accelerometer = 0;
             battery = 0;
             environment = 0;

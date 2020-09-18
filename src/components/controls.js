@@ -90,9 +90,7 @@ class Controls extends React.Component{
         var postData = "False";
         var updates = {};
         updates["drivingLap"] = postData;
-
         firebase.database().ref().update(updates);
-
         stopTimeMilli = Date.now();
         convertedStop = convertTime(stopTimeMilli-startTimeMilli);
         this.forceUpdate();
