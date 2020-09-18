@@ -36,7 +36,7 @@ class Driver extends React.Component{
                <div className="card-content column">
                     <div>
                          <figure className="image is-96x96">
-                              <img src="./public/images/Caroline.jpg" alt=""/>
+                              <img src="./images/Caroline.jpg" alt=""/>
                          </figure>
 
                          <div className="media-content">
