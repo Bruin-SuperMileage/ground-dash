@@ -13,8 +13,8 @@ class Track extends React.Component{
                <div className="columns">
                     <div className="column">
                          <div className="card-content">
-                              <p className="title is-4">{this.props.track["name"]}</p>
-                              <p className="title is-6">Trial Number {this.props.track["trial"]} </p>
+                              <p className="title is-4">Parking Garage</p>
+                              <p className="title is-6">{this.props.track["Latest Trial"]} </p>
                          </div>
                          <GPS gps={this.props.gps}/>
                     </div>

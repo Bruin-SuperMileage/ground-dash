@@ -57,13 +57,13 @@ class Controls extends React.Component{
             pushTime = currentTime - lapTimeMilli[lapTimeMilli.length-2];
         }
         lapTime.push(pushTime);
-        update1["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1;
-        update1["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1;
+        var update2 = {};
+        update2["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1;
+        update2["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1;
         var convertedLapTime = convertTime(pushTime);
         convertedLapTimes.push(convertedLapTime);
         firebase.database().ref().update(update1);
         var lapFirebase = (lapNumber-1);
-        var update2 = {};
         update2[lapFirebase] = convertedLapTime;
         firebase.database().ref(latestTrial + "/lap times").update(update2);
         this.forceUpdate();
@@ -72,10 +72,8 @@ class Controls extends React.Component{
     start() {  
         var postData = "True";
         var updates = {};
-        updates["Running"] = postData;
+        updates["drivingLap"] = postData;
         updates["Lap"] = 1;
-        updates["Fastest"] = 0;
-        updates["Slowest"] = 0;
         firebase.database().ref().update(updates);
         startTimeMilli = Date.now();
         var startTime = new Date(startTimeMilli)
@@ -91,7 +89,7 @@ class Controls extends React.Component{
     stop() {
         var postData = "False";
         var updates = {};
-        updates["Running"] = postData;
+        updates["drivingLap"] = postData;
 
         firebase.database().ref().update(updates);
 

@@ -59,15 +59,15 @@ class Lap extends React.Component{
      };
 
      componentDidMount = () => {
-          if (this.props.lap["Running"] === "True") {
-               if (this.props.lap["Running"] === "True") {
+          if (this.props.lap["drivingLap"] === "True") {
+               if (this.props.lap["drivingLap"] === "True") {
                     this.resetTimer();
                     this.startTimer();
                     this.setState({
                          isRunning: "True",
                     })
                 }
-               else if (this.props.lap["Running"] === "False") {
+               else if (this.props.lap["drivingLap"] === "False") {
                     this.stopTimer();
                     this.setState({
                          isRunning: "False"
@@ -78,15 +78,15 @@ class Lap extends React.Component{
       
      componentDidUpdate = () => {
           const {isRunning, lapNumber} = this.state;
-          if (isRunning !== this.props.lap["Running"]) {
-               if (this.props.lap["Running"] === "True") {
+          if (isRunning !== this.props.lap["drivingLap"]) {
+               if (this.props.lap["drivingLap"] === "True") {
                     this.startTimer();
                     this.resetTimer();
                     this.setState({
                          isRunning: "True"
                     })
                }
-               else if (this.props.lap["Running"] === "False") {
+               else if (this.props.lap["drivingLap"] === "False") {
                     this.stopTimer();
                     this.setState({
                          isRunning: "False"
@@ -102,13 +102,7 @@ class Lap extends React.Component{
      }
 
      render() {
-          // let database = firebase.database();
-          // let firebaseData = {};
-          // database.ref().on('value', (snapshot) => {
-          //      firebaseData = snapshot.val();
-          // });
-          //this.props.lap[]
-          let latestTrial// = firebaseData["Latest Trial"];
+          let latestTrial;
           let peakTimes = {};
           let database = firebase.database();
           let exists;
@@ -123,9 +117,13 @@ class Lap extends React.Component{
           });
           let slowestTime = "";
           let fastestTime = "";
+          let slowestLap = "0";
+          let fastestLap = "0";
           if (exists === true) {
-               slowestTime = peakTimes[this.props.lap["Slowest"]];
-               fastestTime = peakTimes[this.props.lap["Fastest"]];
+               slowestLap = peakTimes["Slowest"];
+               fastestLap = peakTimes["Fastest"];
+               slowestTime = peakTimes[slowestLap];
+               fastestTime = peakTimes[fastestLap];
           }
           const { timerTime, timerTimeReset } = this.state;
           let centiseconds = ("0" + (Math.floor(timerTimeReset / 10) % 100)).slice(-2);
@@ -140,7 +138,7 @@ class Lap extends React.Component{
                <div className="columns">
                     <div className="column">
                          <div className="card-content">
-                              <p className="title is-6">Lap: {this.props.lap["Lap"]}</p>
+                              <p className="title is-6">Lap: {this.props.lap.Lap}</p>
                               <p className="subtitle is-6">Lap Time: {minutes}:{seconds}.{centiseconds} </p>
                               <p className="subtitle is-6">Time Remaining: {fourptthreeminutes}:{fourptthreeseconds}.{fourptthreecentiseconds} </p>
                          </div>
@@ -148,10 +146,10 @@ class Lap extends React.Component{
                     <div className="column">
                          <div className="card-content">
                               <p className="subtitle is-6">
-                                   Slowest Lap: {this.props.lap["Slowest"]} {slowestTime}
+                                   Slowest Lap: {slowestLap} {slowestTime}
                               </p>
                               <p className="subtitle is-6">
-                                   Fastest Lap: {this.props.lap["Fastest"]} {fastestTime}
+                                   Fastest Lap: {fastestLap} {fastestTime}
                               </p>
                          </div>
                     </div>
