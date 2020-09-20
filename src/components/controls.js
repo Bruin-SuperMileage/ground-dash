@@ -82,7 +82,6 @@ class Controls extends React.Component{
         });
         if (running === "True")
         {
-            console.log("Running: " + running);
             var postData = "True";
             var updates = {};
             updates["drivingLap"] = postData;

@@ -59,11 +59,12 @@ class App extends React.Component {
           var difference = Math.abs(this.state.latestTimeUpdate - current);
           //console.log(difference);
           if (difference > 5000) {
+            //console.log("update");
             var update = {};
             update["Running"] = "False";
             database.ref().update(update);
           }
-        }, 1000);
+        }, 5000);
       });
     }); 
     
