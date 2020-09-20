@@ -22,7 +22,6 @@ class App extends React.Component {
       latestData: {},
       accelerometer: {},
       battery: {},
-      //driver: {},
       environment: {},     
       gps: {},
       halleffect: {},
@@ -34,33 +33,52 @@ class App extends React.Component {
       motor: {},
       speed: {},
       track: {},
+      latestTimeUpdate: new Date(),
     };
   }
-
+  
   componentDidMount() {
     let database = firebase.database();
-
     database.ref().on('value', (snapshot) => {
       var all = snapshot.val();
       this.setState({
         all: all
       })
     });
+    database.ref("Latest Time").on('value', (snapshot) => {
+      database.ref("Running").on('value', (snapshot) => {
+        var running = snapshot.val();
+        if (running === "True") {
+          var dateUpdate = new Date();
+          this.setState({
+            latestTimeUpdate: dateUpdate
+          })
+        }
+        setInterval(() => {
+          var current = new Date();
+          var difference = Math.abs(this.state.latestTimeUpdate - current);
+          //console.log(difference);
+          if (difference > 5000) {
+            var update = {};
+            update["Running"] = "False";
+            database.ref().update(update);
+          }
+        }, 1000);
+      });
+    }); 
+    
     //sets the time
     database.ref("Latest Time").on('value', (snapshot) => {
       var latestTime1 = snapshot.val();
-
       //sets the trial
       database.ref("Latest Trial").on('value', (snapshot) => {
         var latestTrial1 = snapshot.val();
-
         //sets the data
         database.ref(latestTrial1).child(latestTime1).on('value', (snapshot) => {
           var latestData1 = {};
           let exists = snapshot.exists();
           let accelerometer;
           let battery;
-          //let driver;
           let environment;
           let gps;
           let halleffect;
@@ -135,9 +153,8 @@ class App extends React.Component {
         <Header/>
         <div className="columns">
           <div className="column">  
-            <Driver /* driver={this.state.driver} */ />
+            <Driver/>
             <Car joulemeter={this.state.joulemeter} environment={this.state.environment} magnetometer={this.state.magnetometer} imu={this.state.imu} accelerometer={this.state.accelerometer} halleffect={this.state.halleffect} />
-            {/* <Car battery={this.state.battery} motor={this.state.motor} imu={this.state.imu} joulemeter={this.state.joulemeter} speed={this.state.speed} /> */}
            </div>
           <div className="column">
             <Track gps={this.state.gps} lap={this.state.all} track={this.state.all} /> 

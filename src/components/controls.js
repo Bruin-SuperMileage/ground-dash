@@ -9,6 +9,7 @@ var lapTimeMilli = [];
 var lapTime = [];
 var convertedLapTimes = [];
 var lapNumber;
+let database = firebase.database(); 
 
 Number.prototype.pad = function(size) {
     var s = String(this);
@@ -29,7 +30,6 @@ function convertTime(milliseconds) {
 class Controls extends React.Component{
     constructor(props) {
         super(props);
-
         // This binding is necessary to make `this` work in the callback
         this.lap = this.lap.bind(this);
         this.start = this.start.bind(this);
@@ -37,63 +37,87 @@ class Controls extends React.Component{
     }
 
     lap() {
-        var latestTrial;
-        let database = firebase.database(); 
-        database.ref("Latest Trial").on('value', (snapshot) => {
-            latestTrial = snapshot.val();
+        var running;
+        database.ref("Running").on('value', (snapshot) => {
+            running = snapshot.val();
         });
-        database.ref("Lap").on('value', (snapshot) => {
-            lapNumber = snapshot.val();
-        });
-        var update1 = {};
-        update1["Lap"] = lapNumber+1;
-        var currentTime = Date.now();
-        lapTimeMilli.push(currentTime);
-        var pushTime;
-        if (lapTimeMilli.length === 1) {
-            pushTime = currentTime - startTimeMilli;
+        if (running === "True")
+        {
+            var latestTrial;
+            database.ref("Latest Trial").on('value', (snapshot) => {
+                latestTrial = snapshot.val();
+            });
+            database.ref("Lap").on('value', (snapshot) => {
+                lapNumber = snapshot.val();
+            });
+            var update1 = {};
+            update1["Lap"] = lapNumber+1;
+            var currentTime = Date.now();
+            lapTimeMilli.push(currentTime);
+            var pushTime;
+            if (lapTimeMilli.length === 1) {
+                pushTime = currentTime - startTimeMilli;
+            }
+            else {
+                pushTime = currentTime - lapTimeMilli[lapTimeMilli.length-2];
+            }
+            lapTime.push(pushTime);
+            var update2 = {};
+            update2["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1;
+            update2["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1;
+            var convertedLapTime = convertTime(pushTime);
+            convertedLapTimes.push(convertedLapTime);
+            firebase.database().ref().update(update1);
+            var lapFirebase = (lapNumber-1);
+            update2[lapFirebase] = convertedLapTime;
+            firebase.database().ref(latestTrial + "/lap times").update(update2);
+            this.forceUpdate();
         }
-        else {
-            pushTime = currentTime - lapTimeMilli[lapTimeMilli.length-2];
-        }
-        lapTime.push(pushTime);
-        var update2 = {};
-        update2["Fastest"] = lapTime.indexOf(Math.min(...lapTime))+1;
-        update2["Slowest"] = lapTime.indexOf(Math.max(...lapTime))+1;
-        var convertedLapTime = convertTime(pushTime);
-        convertedLapTimes.push(convertedLapTime);
-        firebase.database().ref().update(update1);
-        var lapFirebase = (lapNumber-1);
-        update2[lapFirebase] = convertedLapTime;
-        firebase.database().ref(latestTrial + "/lap times").update(update2);
-        this.forceUpdate();
     }
 
-    start() {  
-        var postData = "True";
-        var updates = {};
-        updates["drivingLap"] = postData;
-        updates["Lap"] = 1;
-        firebase.database().ref().update(updates);
-        startTimeMilli = Date.now();
-        var startTime = new Date(startTimeMilli)
-        convertedStart = startTime.getHours() + ":" + startTime.getMinutes() + ":" + startTime.getSeconds()
-        stopTimeMilli = "";
-        convertedStop = "";
-        lapTimeMilli = [];
-        lapTime = [];
-        convertedLapTimes = [];
-        this.forceUpdate();
+    start() {
+        var running;
+        database.ref("Running").on('value', (snapshot) => {
+            running = snapshot.val();
+        });
+        if (running === "True")
+        {
+            console.log("Running: " + running);
+            var postData = "True";
+            var updates = {};
+            updates["drivingLap"] = postData;
+            updates["Lap"] = 1;
+            firebase.database().ref().update(updates);
+            startTimeMilli = Date.now();
+            var startTime = new Date(startTimeMilli)
+            convertedStart = startTime.getHours() + ":" + startTime.getMinutes() + ":" + startTime.getSeconds()
+            stopTimeMilli = "";
+            convertedStop = "";
+            lapTimeMilli = [];
+            lapTime = [];
+            convertedLapTimes = [];
+            this.forceUpdate();
+        }
     }
 
     stop() {
-        var postData = "False";
-        var updates = {};
-        updates["drivingLap"] = postData;
-        firebase.database().ref().update(updates);
-        stopTimeMilli = Date.now();
-        convertedStop = convertTime(stopTimeMilli-startTimeMilli);
-        this.forceUpdate();
+        var running, driving;
+        database.ref("Running").on('value', (snapshot) => {
+            running = snapshot.val();
+        });
+        database.ref("drivingLap").on('value', (snapshot) => {
+            driving = snapshot.val();
+        });
+        if (running === "True" && driving === "True")
+        {
+            var postData = "False";
+            var updates = {};
+            updates["drivingLap"] = postData;
+            firebase.database().ref().update(updates);
+            stopTimeMilli = Date.now();
+            convertedStop = convertTime(stopTimeMilli-startTimeMilli);
+            this.forceUpdate();
+        }
     }
 
     render() {
