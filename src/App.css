@@ -100,9 +100,10 @@ body {
   background-color: black; 
 }
 
-/* html {
+html {
   background: #282c34;
-} */
+  overflow:hidden;
+}
 
 .column {
   overflow-y: hidden;
