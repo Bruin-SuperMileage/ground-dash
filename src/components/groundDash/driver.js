@@ -36,7 +36,7 @@ class Driver extends React.Component{
                <div className="card-content column">
                     <div>
                          <figure className="image is-96x96">
-                              <img src="./images/Caroline.jpg" alt=""/>
+                              <img src={process.env.PUBLIC_URL + "/images/Caroline.jpg"} alt=""/>
                          </figure>
 
                          <div className="media-content">
@@ -51,7 +51,7 @@ class Driver extends React.Component{
                </div>
 
                <div className="column">
-                    <img className="car-image is-pulled-right" src="./images/car.png" alt=""/>  
+                    <img className="car-image is-pulled-right" src={process.env.PUBLIC_URL + "/images/car.png"} alt="Not found"/>  
                </div>
                </div>
           </div>

@@ -177,7 +177,7 @@ export default App;
 function ToggleButton(props) {
   return (
     <button className="toggleButton" >
-      <img src="./ground-dash/images/bruin_racing.png" alt="toggle" onClick={props.onClick}/>
+      <img src={(process.env.PUBLIC_URL + "/images/bruin_racing.png")} alt="toggle" onClick={props.onClick}/>
     </button>
   );
 }
