@@ -6,7 +6,7 @@ import GPS from './gps';
 import Controls from './controls';
 
 class Track extends React.Component{
-    render() {
+     render() {
         return (
           <div className="card track">
                <div className="columns">

@@ -6,8 +6,8 @@ import './App.css';
 // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
 // http://jerairrest.github.io/react-chartjs-2/
 
-import GroundDash from  './components/groundDash';
-import DriverDash from './components/driverDash';
+import ToggleButton from './components/toggleButton';
+import WhichOne from './components/whichOne'
 
 class App extends React.Component {
   constructor(props){
@@ -174,20 +174,3 @@ class App extends React.Component {
 
 export default App;
 
-function ToggleButton(props) {
-  return (
-    <button className="toggleButton" >
-      <img src={(process.env.PUBLIC_URL + "/images/icon.png")} alt="toggle" onClick={props.onClick}/>
-    </button>
-  );
-}
-
-function WhichOne(props) {
-  const whichOne = props.whichOne.which;
-  if (whichOne === "ground") {
-    return <GroundDash joulemeter={props.whichOne.joulemeter} environment={props.whichOne.environment} magnetometer={props.whichOne.magnetometer} imu={props.whichOne.imu} accelerometer={props.whichOne.accelerometer} halleffect={props.whichOne.halleffect} gps={props.whichOne.gps} lap={props.whichOne.all} track={props.whichOne.all} />
-  }
-  else if (whichOne === "driver" ) {
-    return <DriverDash speed={props.whichOne.halleffect} speedometer={props.whichOne.halleffect} lap={props.whichOne.all} />
-  }
-}
