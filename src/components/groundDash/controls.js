@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../firebase.js'
+import firebase from '../../firebase.js'
 
 var startTimeMilli = "";
 var convertedStart = "";
@@ -15,8 +15,8 @@ Number.prototype.pad = function(size) {
     var s = String(this);
     while (s.length < (size || 2)) {s = "0" + s;}
     return s;
-  }
-
+}
+  
 function convertTime(milliseconds) {
     var minute, seconds, milli;
     seconds = Math.floor(milliseconds / 1000);

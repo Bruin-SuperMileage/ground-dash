@@ -6,7 +6,6 @@ import GPS from './gps';
 import Controls from './controls';
 
 class Track extends React.Component{
-
     render() {
         return (
           <div className="card track">
@@ -18,9 +17,6 @@ class Track extends React.Component{
                          </div>
                          <GPS gps={this.props.gps}/>
                     </div>
-                    {/* <div className="column">
-                         <Weather weather={this.props.weather}/>
-                    </div> */}
                </div>
                <Lap lap={this.props.lap}/>
                <div className="card-image">

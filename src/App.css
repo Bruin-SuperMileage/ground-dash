@@ -74,6 +74,25 @@
   color: white;
 }
 
+.speed {
+  color: white;
+  font-size: 30em;
+}
+
+.big {
+  line-height:1;
+}
+
+.km {
+  font-size: 8em;
+}
+
+.lap {
+  font-size: 800%;
+  color:white;
+  margin-top: auto;
+}
+
 body {
   height: 110%;
   overflow: hidden;
@@ -81,9 +100,9 @@ body {
   background-color: black; 
 }
 
-html {
+/* html {
   background: #282c34;
-}
+} */
 
 .column {
   overflow-y: hidden;
@@ -101,4 +120,37 @@ html {
 .numInside {
   list-style: inside;
   list-style-type: decimal;
+}
+
+.driverDash {
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0px;
+  left:0px;
+  z-index:-1;
+  background-image: url(background/dark-paths/dark-paths.png);
+  background-color: #61dafb;
+  overflow: hidden;
+  height: 110%;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.groundDash {
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0px;
+  left:0px;
+  z-index:-1;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 0%;
+  bottom: 0%;
+  width: 5%;
+  background: transparent;
+  border: 0px;
+  outline:none;
 }

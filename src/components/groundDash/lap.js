@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from '../firebase.js';
+import firebase from '../../firebase.js';
 
 class Lap extends React.Component{
      constructor(props) {

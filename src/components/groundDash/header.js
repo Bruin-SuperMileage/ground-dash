@@ -33,6 +33,10 @@ class Header extends React.Component{
     });
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
   render() {
     return (
         <nav className="navbar is-fixed-top is-dark color-dark" role="navigation" aria-label="main navigation">

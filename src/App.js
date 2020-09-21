@@ -6,11 +6,8 @@ import './App.css';
 // https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
 // http://jerairrest.github.io/react-chartjs-2/
 
-import Header from './components/header';
-
-import Driver from './components/driver';
-import Car from './components/car';
-import Track from './components/track';
+import GroundDash from  './components/groundDash';
+import DriverDash from './components/driverDash';
 
 class App extends React.Component {
   constructor(props){
@@ -34,6 +31,7 @@ class App extends React.Component {
       speed: {},
       track: {},
       latestTimeUpdate: new Date(),
+      which: "driver",
     };
   }
   
@@ -148,22 +146,48 @@ class App extends React.Component {
     });
   }
 
+  setDriver() {
+    this.setState({which: "driver"})
+  }
+
+  setGround() {
+    this.setState({which: "ground"})
+  }
+
   render() {
+    const whichOneIsIt = this.state.which;
+    let button;
+    if (whichOneIsIt === "ground") {
+      button = <ToggleButton onClick={()=> this.setDriver()} />;
+    } else if (whichOneIsIt === "driver"){
+      button = <ToggleButton onClick={()=> this.setGround()} />;
+    }
+
     return (
-      <div className="canvas color-dark" style={{paddingTop: '45px'}}>
-        <Header/>
-        <div className="columns">
-          <div className="column">  
-            <Driver/>
-            <Car joulemeter={this.state.joulemeter} environment={this.state.environment} magnetometer={this.state.magnetometer} imu={this.state.imu} accelerometer={this.state.accelerometer} halleffect={this.state.halleffect} />
-           </div>
-          <div className="column">
-            <Track gps={this.state.gps} lap={this.state.all} track={this.state.all} /> 
-          </div>
-        </div>
+      <div>
+        <WhichOne whichOne={this.state} />
+        {button}
       </div>
-    );
+      );
   }
 }
 
 export default App;
+
+function ToggleButton(props) {
+  return (
+    <button className="toggleButton" >
+      <img src="./ground-dash/images/bruin_racing.png" alt="toggle" onClick={props.onClick}/>
+    </button>
+  );
+}
+
+function WhichOne(props) {
+  const whichOne = props.whichOne.which;
+  if (whichOne === "ground") {
+    return <GroundDash joulemeter={props.whichOne.joulemeter} environment={props.whichOne.environment} magnetometer={props.whichOne.magnetometer} imu={props.whichOne.imu} accelerometer={props.whichOne.accelerometer} halleffect={props.whichOne.halleffect} gps={props.whichOne.gps} lap={props.whichOne.all} track={props.whichOne.all} />
+  }
+  else if (whichOne === "driver" ) {
+    return <DriverDash speed={props.whichOne.halleffect} speedometer={props.whichOne.halleffect} lap={props.whichOne.all} />
+  }
+}
