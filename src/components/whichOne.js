@@ -4,13 +4,33 @@ import DriverDash from './driverDash'
 
 class WhichOne extends React.Component {
     render() {
-        let whichOne = this.props.whichOne.which;
+        let {which,
+            joulemeter,
+            environment,
+            magnetometer,
+            imu, 
+            accelerometer, 
+            halleffect, 
+            gps, 
+            all}  = this.props.whichOne;
         const Which = () => {
-            if (whichOne === "ground") {
-                return <GroundDash joulemeter={this.props.whichOne.joulemeter} environment={this.props.whichOne.environment} magnetometer={this.props.whichOne.magnetometer} imu={this.props.whichOne.imu} accelerometer={this.props.whichOne.accelerometer} halleffect={this.props.whichOne.halleffect} gps={this.props.whichOne.gps} lap={this.props.whichOne.all} track={this.props.whichOne.all} />
+            if (which === "ground") {
+                return <GroundDash 
+                joulemeter={joulemeter} 
+                environment={environment} 
+                magnetometer={magnetometer} 
+                imu={imu} 
+                accelerometer={accelerometer} 
+                halleffect={halleffect} 
+                gps={gps} 
+                lap={all} 
+                track={all} />
             }
-            else if (whichOne === "driver" ) {
-                return <DriverDash speed={this.props.whichOne.halleffect} speedometer={this.props.whichOne.halleffect} lap={this.props.whichOne.all} />
+            else if (which === "driver" ) {
+                return <DriverDash 
+                speed={halleffect} 
+                speedometer={halleffect} 
+                lap={all} />
             }
         }
         return (

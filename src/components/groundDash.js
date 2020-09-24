@@ -13,10 +13,19 @@ class GroundDash extends React.Component{
               <div className="columns">
                 <div className="column">  
                   <Driver/>
-                  <Car joulemeter={this.props.joulemeter} environment={this.props.environment} magnetometer={this.props.magnetometer} imu={this.props.imu} accelerometer={this.props.accelerometer} halleffect={this.props.halleffect} />
+                  <Car 
+                  joulemeter={this.props.joulemeter} 
+                  environment={this.props.environment} 
+                  magnetometer={this.props.magnetometer} 
+                  imu={this.props.imu} 
+                  accelerometer={this.props.accelerometer} 
+                  halleffect={this.props.halleffect} />
                  </div>
                 <div className="column">
-                  <Track gps={this.props.gps} lap={this.props.lap} track={this.props.track} /> 
+                  <Track 
+                  gps={this.props.gps} 
+                  lap={this.props.lap} 
+                  track={this.props.track} /> 
                 </div>
               </div>
             </div>

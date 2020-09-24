@@ -10,11 +10,14 @@ class Driver extends React.Component{
             <div className="canvas color-dark driverDash" style={{paddingTop: '45px'}}>
               <div className="columns is-vcentered">
                 <div className="column is-one-third">   
-                  <SpeedDriver speed={this.props.speed} />
+                  <SpeedDriver 
+                  speed={this.props.speed} />
                 </div>
                 <div className="column">
-                  <SpeedometerDriver speedometer={this.props.speed}/>
-                  <LapDriver lap={this.props.lap} />  
+                  <SpeedometerDriver 
+                  speedometer={this.props.speed}/>
+                  <LapDriver 
+                  lap={this.props.lap} />  
                 </div>
               </div>
             </div>
