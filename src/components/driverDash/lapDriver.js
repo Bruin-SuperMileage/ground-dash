@@ -97,7 +97,7 @@ class LapDriver extends React.Component{
         <div className="lap">
             <div className="card-content columns">
                 <div className="column">
-                  <p>Lap {this.props.lap["Lap"]}</p>
+                  <p>Lap {this.props.lap.Lap}</p>
                   <p>Remaining</p>
                 </div>
                 <div className="column">
@@ -111,6 +111,5 @@ class LapDriver extends React.Component{
   }
 
 };
-
      
 export default LapDriver;

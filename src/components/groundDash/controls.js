@@ -148,7 +148,7 @@ class Controls extends React.Component{
                         <div className="column padding-left">
                             <ol className="numInside">
                                 <p className="title is-5">Time: {convertedLapTimes.map(item => {
-                                    return <li>{item}</li>
+                                    return <li key={item}>{item}</li>
                                     })}
                                 </p>
                             </ol>

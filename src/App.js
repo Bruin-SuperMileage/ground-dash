@@ -34,7 +34,7 @@ class App extends React.Component {
       which: "driver",
     };
   }
-  
+
   componentDidMount() {
     let database = firebase.database();
     database.ref().on('value', (snapshot) => {
@@ -61,6 +61,7 @@ class App extends React.Component {
             var update = {};
             update["Running"] = "False";
             database.ref().update(update);
+            clearInterval(this.intervalID);
           }
         }, 5000);
       });
