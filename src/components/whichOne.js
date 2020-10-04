@@ -12,7 +12,10 @@ class WhichOne extends React.Component {
             accelerometer, 
             halleffect, 
             gps, 
-            all}  = this.props.whichOne;
+            all,
+            labels,
+            speedVals,
+            rpmVals,}  = this.props.whichOne;
         const Which = () => {
             if (which === "ground") {
                 return <GroundDash 
@@ -24,7 +27,10 @@ class WhichOne extends React.Component {
                 halleffect={halleffect} 
                 gps={gps} 
                 lap={all} 
-                track={all} />
+                track={all}
+                labels={labels}
+                rpmVals={rpmVals}
+                speedVals={speedVals} />
             }
             else if (which === "driver" ) {
                 return <DriverDash 
