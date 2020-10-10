@@ -8,6 +8,7 @@ import './App.css';
 
 import ToggleButton from './components/toggleButton';
 import WhichOne from './components/whichOne'
+import LineGraph from './components/line'
 
 class App extends React.Component {
   constructor(props){
@@ -31,7 +32,10 @@ class App extends React.Component {
       speed: {},
       track: {},
       latestTimeUpdate: new Date(),
-      which: "driver",
+      which: "ground",
+      labels: [],
+      speedVals: [],
+      rpmVals: [],
     };
   }
 
@@ -40,39 +44,52 @@ class App extends React.Component {
     database.ref().on('value', (snapshot) => {
       var all = snapshot.val();
       this.setState({
-        all: all
+        all: all,
       })
     });
-    database.ref("Latest Time").on('value', (snapshot) => {
-      database.ref("Running").on('value', (snapshot) => {
-        var running = snapshot.val();
-        if (running === "True") {
-          var dateUpdate = new Date();
-          this.setState({
-            latestTimeUpdate: dateUpdate
-          })
+    database.ref("Running").on('value', (snapshot) => {
+      var running = snapshot.val();
+      if (running === "True") {
+        var dateUpdate = new Date();
+        this.setState({
+          latestTimeUpdate: dateUpdate
+        })
+      }
+      setInterval(() => {
+        var current = new Date();
+        var difference = Math.abs(this.state.latestTimeUpdate - current);
+        //console.log(difference);
+        if (difference > 5000) {
+          //console.log("update");
+          var update = {};
+          update["Running"] = "False";
+          database.ref().update(update);
+          clearInterval(this.intervalID);
         }
-        setInterval(() => {
-          var current = new Date();
-          var difference = Math.abs(this.state.latestTimeUpdate - current);
-          //console.log(difference);
-          if (difference > 5000) {
-            //console.log("update");
-            var update = {};
-            update["Running"] = "False";
-            database.ref().update(update);
-            clearInterval(this.intervalID);
-          }
-        }, 5000);
-      });
-    }); 
+      }, 5000);
+    });
     
     //sets the time
     database.ref("Latest Time").on('value', (snapshot) => {
       var latestTime1 = snapshot.val();
-      //sets the trial
       database.ref("Latest Trial").on('value', (snapshot) => {
         var latestTrial1 = snapshot.val();
+        database.ref(latestTrial1).on('value', (snapshot) => {
+          var snap = snapshot.val();
+          var labels = [];
+          var speedVals = [];
+          var rpmVals = [];
+          Object.keys(snap).forEach(key2 => {
+            labels.push(key2)
+            speedVals.push(snap[key2]["hall-effect"]["speed"])
+            rpmVals.push(snap[key2]["hall-effect"]["rpm"]);
+          })
+          this.setState({
+            labels: labels,
+            rpmVals: rpmVals,
+            speedVals: speedVals,
+          })
+        })
         //sets the data
         database.ref(latestTrial1).child(latestTime1).on('value', (snapshot) => {
           var latestData1 = {};
@@ -147,23 +164,14 @@ class App extends React.Component {
     });
   }
 
-  setDriver() {
-    this.setState({which: "driver"})
-  }
-
-  setGround() {
-    this.setState({which: "ground"})
-  }
-
   render() {
     const whichOneIsIt = this.state.which;
     let button;
     if (whichOneIsIt === "ground") {
-      button = <ToggleButton onClick={()=> this.setDriver()} />;
+      button = <ToggleButton onClick={()=> this.setState({which: "driver"})} />;
     } else if (whichOneIsIt === "driver"){
-      button = <ToggleButton onClick={()=> this.setGround()} />;
+      button = <ToggleButton onClick={()=> this.setState({which: "ground"})} />;
     }
-
     return (
       <div>
         <WhichOne whichOne={this.state} />
