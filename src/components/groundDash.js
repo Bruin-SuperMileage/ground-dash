@@ -8,6 +8,8 @@ import LineGraph from './line'
 
 class GroundDash extends React.Component{
   render() {
+    var name1 = this.props.dialogState1.split("|")[1]
+    var name2 = this.props.dialogState2.split("|")[1]
     return (
       <div className="groundDash canvas color-dark" style={{paddingTop: '45px'}}>
         <Header/>
@@ -32,10 +34,10 @@ class GroundDash extends React.Component{
         </div>
         <div className="columns">
           <div className="column">
-            <LineGraph labels={this.props.labels} vals={this.props.speedVals} name={"Speed"} />
+            <LineGraph labels={this.props.labels} vals={this.props.graphOneVals} name={name1} changeDialogState={this.props.changeDialogState} lapLabels={this.props.lapLabels}/>
           </div>
           <div className="column">
-            <LineGraph labels={this.props.labels} vals={this.props.rpmVals} name={"RPM"} />
+            <LineGraph labels={this.props.labels} vals={this.props.graphTwoVals} name={name2} changeDialogState={this.props.changeDialogStateTwo} lapLabels={this.props.lapLabels}/>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
-import GroundDash from './groundDash'
-import DriverDash from './driverDash'
+import GroundDash from '../components/groundDash'
+import DriverDash from '../components/driverDash'
 
 class WhichOne extends React.Component {
     render() {
