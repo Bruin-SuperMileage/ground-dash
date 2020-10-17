@@ -1,14 +1,28 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
-import 'chart.js';
 import 'chartjs-plugin-annotation';
+import 'chartjs-plugin-streaming'
 
 class LineGraph extends React.Component{
+  constructor(props) {
+    super(props)
+    this.onRefresh = this.onRefresh.bind(this);
+  }
+
+  onRefresh = (chart) => {
+    var dataVals = this.props.vals;
+    chart.data.datasets.forEach(function (dataset){
+      dataset.data.push({
+        x: Date.now(),
+        y: dataVals
+      });
+    });
+  }
+
   render() {
     var data = {
       labels: this.props.labels,
-      datasets: [
-      {
+      datasets: [{
         label: this.props.name,
         fill: true,
         lineTension: 0.1,
@@ -27,47 +41,25 @@ class LineGraph extends React.Component{
         pointHoverBorderWidth: 2,
         pointRadius: 1,
         pointHitRadius: 10,
-        data: this.props.vals,
-      }
-      ]
+      }]
     }
-    var annotationArray = [];
-    this.props.lapLabels.forEach(element => {
-      var lapLabelSplit = element.split('|');
-      annotationArray.push({
-        drawTime: "beforeDatasetsDraw",
-          type: "line",
-          mode: "vertical",
-          scaleID: "x-axis-0",
-          value: Number(lapLabelSplit[1]),
-          borderColor: "black",
-          borderWidth: 5,
-          label: {
-            content: "Lap " + lapLabelSplit[0],
-            enabled: true
-          },
-      })
-    });
     var options = {
       maintainAspectRatio: false,
-      animation: {
-        duration: 0
-      },
-      elements: {
-        line: {
-            tension: 0, // disables bezier curves
-            fill: false,
-            stepped: false,
-            borderDash: []
-        }
-      },
-      annotation: {
-        annotations: annotationArray
+      scales: {
+        xAxes: [{
+          type: 'realtime',
+          gridLines: { display: true }, type: "time", time: { parser: "DD/MM/YYYY" },
+          realtime: {
+            refresh: 250,
+            onRefresh: this.onRefresh,
+            delay: 1000
+          }
+        }]
       }
     }
     var changeDialogState = this.props.changeDialogState;
     return (
-      <div /* onClick={() => changeDialogState("rpm")} */>
+      <div>
         <select onChange={changeDialogState}>
           <option style={{display: "none"}}>Pick parameter to display</option>
           <option value="hall-effect|rpm">RPM</option>
@@ -95,7 +87,7 @@ class LineGraph extends React.Component{
         </select>
         <div className="card">
           <div className="card-image">
-            <Line data={data} height={1000} options={options} />
+            <Line ref="chart" data={data} height={1000} options={options} />
           </div>
         </div>
       </div>

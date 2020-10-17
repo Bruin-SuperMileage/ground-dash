@@ -34,8 +34,8 @@ class App extends React.Component {
       latestTimeUpdate: new Date(),
       which: "ground",
       labels: [],
-      graphOneVals: [],
-      graphTwoVals: [],
+      graphOneVals: 0,
+      graphTwoVals: 0,
       dialogState1: "|Pick a graph!",
       dialogState2: "|Pick a graph!",
       currentLap: 1,
@@ -52,7 +52,6 @@ class App extends React.Component {
   }
 
   checkDifference = () => {
-    console.log("difference");
     let database = firebase.database();
     var current = new Date();
     var difference = Math.abs(this.state.latestTimeUpdate - current);
@@ -82,24 +81,14 @@ class App extends React.Component {
         })
       }
     });
-    this.interval = setInterval(this.checkDifference, 5000);
-    
-    //sets the time
     database.ref("Latest Time").on('value', (snapshot) => {
       var latestTime1 = snapshot.val();
       database.ref("Latest Trial").on('value', (snapshot) => {
         var latestTrial1 = snapshot.val();
         database.ref(latestTrial1).child(latestTime1).on('value', (snapshot) => {
-          database.ref(latestTrial1).on('value', (snapshot) => {
-            var snap = snapshot.val();
-            var labels = [];
-            Object.keys(snap).forEach(key2 => {
-              labels.push(key2);
-            })
-            this.setState({
-              labels: labels,
-            })
-          })
+          var labels = this.state.labels;
+          var graphTwoVals = this.state.graphTwoVals;
+          labels.push(latestTime1);
           let exists = snapshot.exists();
           let accelerometer;
           let environment;
@@ -124,7 +113,6 @@ class App extends React.Component {
             magnetometer = latestData1["magnetometer"];
             motor = latestData1["motor"];
             speed = latestData1["speed"];
-            
           }
           else {
             accelerometer = 0;
@@ -138,7 +126,6 @@ class App extends React.Component {
             motor = 0;
             speed = 0;
           }
-          
           this.setState({
             latestData: latestData1,
             accelerometer: accelerometer,
@@ -151,63 +138,37 @@ class App extends React.Component {
             magnetometer: magnetometer,
             motor: motor,
             speed: speed,
+            labels: labels,
+            graphTwoVals: graphTwoVals,
           })
         });
-  
         this.setState({
-          latestTrial: latestTrial1
+          latestTrial: latestTrial1,
+          latestTime: latestTime1
         })
-      });
-
-      this.setState({
-        latestTime: latestTime1
       })
     });
+    this.interval = setInterval(this.checkDifference, 5000);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.dialogState1 !== prevState.dialogState1 || this.state.dialogState2 !== prevState.dialogState2)
-    {
-      let database = firebase.database();
-      database.ref("Latest Trial").on('value', (snapshot) => {
-        var latestTrial1 = snapshot.val();
-        database.ref(latestTrial1).on('value', (snapshot) => {
-          var snap = snapshot.val();
-          var graphOneVals = [];
-          var graphTwoVals = [];
-          Object.keys(snap).forEach(key2 => {
-            if (Number.isInteger(Number(key2[0]))) {
-              if (this.state.dialogState1 !== prevState.dialogState1) {
-                var split = this.state.dialogState1.split("|");
-                graphOneVals.push(snap[key2][split[0]][split[1]]);
-              }
-              if (this.state.dialogState2 !== prevState.dialogState2) {
-                var split2 = this.state.dialogState2.split("|");
-                graphTwoVals.push(snap[key2][split2[0]][split2[1]]);
-              }
-            }
-          })
-          if (this.state.dialogState1 !== prevState.dialogState1) {
-            this.setState({
-              graphOneVals: graphOneVals,
-            });
-          }
-          if (this.state.dialogState2 !== prevState.dialogState2) {
-            this.setState({
-              graphTwoVals: graphTwoVals,
-            });
-          }
+    if (this.state.dialogState1.split("|")[0] !== "") {
+      if (this.state.latestTime !== prevState.latestTime) {
+        var data = this.state.latestData;
+        var split1 = this.state.dialogState1.split("|");
+        this.setState({
+          graphOneVals: data[split1[0]][split1[1]],
         })
-      })
+      }
     }
-    if (this.state.currentLap !== prevState.currentLap)
-    {
-      var lapString = this.state.currentLap-1 + "|" + this.state.labels.length;
-      let currentLapArray = [...this.state.lapLabels];
-      currentLapArray.push(lapString);
-      this.setState({
-        lapLabels: currentLapArray,
-      })
+    if (this.state.dialogState2.split("|")[0] !== "") {
+      if (this.state.latestTime !== prevState.latestTime) {
+        var data = this.state.latestData;
+        var split2 = this.state.dialogState2.split("|");
+        this.setState({
+          graphTwoVals: data[split2[0]][split2[1]],
+        })
+      }
     }
   }
 

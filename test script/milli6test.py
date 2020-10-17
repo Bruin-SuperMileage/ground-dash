@@ -54,6 +54,8 @@ timeName = now.strftime("%H:%M:%S:%f") [:-3] #set current time
 db.update(
   {"Lap": 1,})
 
+
+
 while (True):
   #Read in from the serial. Timeout if nothing is available
   # text = ser.readline().decode() #read in one data string
@@ -147,7 +149,7 @@ while (True):
   # "Latest Time": timeName, 
   # "Previous Time": previousTime})
   
-  #sleep(0.5)
+  sleep(0.2)
   # n += 1
 
 
