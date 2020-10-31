@@ -5,8 +5,8 @@ class SpeedDriver extends React.Component{
         return (
           <div className="columns">
                <div className="column">
-                    <p className = "speed has-text-centered big">{this.props.speed.speed}</p>
-                    <p className = "speed has-text-centered km">m/s</p>
+                    <p className = "speed has-text-centered big">{parseFloat(this.props.speed.speed*2.23694).toFixed(1)}</p>
+                    <p className = "speed has-text-centered km">mph</p>
                </div>
           </div>
         );

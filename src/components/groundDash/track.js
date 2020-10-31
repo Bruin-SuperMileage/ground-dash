@@ -1,9 +1,8 @@
 import React from 'react';
-
-//import Weather from './weather';
 import Lap from './lap';
 import GPS from './gps';
 import Controls from './controls';
+
 class Track extends React.Component{
      render() {
           return (
@@ -25,6 +24,5 @@ class Track extends React.Component{
           );
      }
 };
-
      
 export default Track;

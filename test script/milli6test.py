@@ -149,7 +149,7 @@ while (True):
   # "Latest Time": timeName, 
   # "Previous Time": previousTime})
   
-  sleep(0.2)
+  sleep(0.3)
   # n += 1
 
 

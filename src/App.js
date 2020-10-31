@@ -1,5 +1,6 @@
 import React from 'react';
-import firebase from './firebase.js'
+import firebase from './firebase';
+import 'firebase/database';
 import './App.css';
 
 // HERE IS THE WEBSITE IM USING FOR THE GRAPH EXAMPLES SUPER HELPFUL
@@ -8,7 +9,7 @@ import './App.css';
 
 import ToggleButton from './components/toggleButton';
 import GroundDash from './components/groundDash';
-import DriverDash from './components/driverDash'
+import DriverDash from './components/driverDash';
 
 class App extends React.Component {
   constructor(props){
@@ -40,6 +41,7 @@ class App extends React.Component {
       dialogState2: "|Pick a graph!",
       currentLap: 1,
       lapLabels: [],
+      pause: true,
     };
   }
 
@@ -55,10 +57,13 @@ class App extends React.Component {
     let database = firebase.database();
     var current = new Date();
     var difference = Math.abs(this.state.latestTimeUpdate - current);
-    if (difference > 5000) {
+    if (difference > 2500) {
       var update = {};
       update["Running"] = "False";
       database.ref().update(update);
+      this.setState({
+        pause: true,
+      })
     }
   }
 
@@ -75,9 +80,8 @@ class App extends React.Component {
     database.ref("Running").on('value', (snapshot) => {
       var running = snapshot.val();
       if (running === "True") {
-        var dateUpdate = new Date();
         this.setState({
-          latestTimeUpdate: dateUpdate
+          pause: false,
         })
       }
     });
@@ -152,21 +156,29 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (this.state.latestTime !== prevState.latestTime)
+    {
+      if (this.state.pause === false)
+      {
+        var dateUpdate = new Date();
+        this.setState({latestTimeUpdate: dateUpdate})
+      }
+    }
     if (this.state.dialogState1.split("|")[0] !== "") {
       if (this.state.latestTime !== prevState.latestTime) {
-        var data = this.state.latestData;
+        var data1 = this.state.latestData;
         var split1 = this.state.dialogState1.split("|");
         this.setState({
-          graphOneVals: data[split1[0]][split1[1]],
+          graphOneVals: data1[split1[0]][split1[1]],
         })
       }
     }
     if (this.state.dialogState2.split("|")[0] !== "") {
       if (this.state.latestTime !== prevState.latestTime) {
-        var data = this.state.latestData;
+        var data2 = this.state.latestData;
         var split2 = this.state.dialogState2.split("|");
         this.setState({
-          graphTwoVals: data[split2[0]][split2[1]],
+          graphTwoVals: data2[split2[0]][split2[1]],
         })
       }
     }
@@ -209,7 +221,7 @@ function ViewToggle(props) {
     dialogState1,
     dialogState2,
     lapLabels,
-    }  = props.props.state;
+    pause,}  = props.props.state;
     var changeDialogState = props.changeDialogState;
     var changeDialogStateTwo = props.changeDialogStateTwo;
   if (which === "ground") {
@@ -231,6 +243,7 @@ function ViewToggle(props) {
       dialogState1={dialogState1}
       dialogState2={dialogState2}
       lapLabels={lapLabels}
+      pause={pause}
        />
   }
   else if (which === "driver" ) {

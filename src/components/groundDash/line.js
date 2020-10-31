@@ -1,7 +1,7 @@
 import React from 'react';
 import {Line} from 'react-chartjs-2';
 import 'chartjs-plugin-annotation';
-import 'chartjs-plugin-streaming'
+import 'chartjs-plugin-streaming';
 
 class LineGraph extends React.Component{
   constructor(props) {
@@ -20,6 +20,7 @@ class LineGraph extends React.Component{
   }
 
   render() {
+    var pause = this.props.pause;
     var data = {
       labels: this.props.labels,
       datasets: [{
@@ -47,12 +48,15 @@ class LineGraph extends React.Component{
       maintainAspectRatio: false,
       scales: {
         xAxes: [{
-          type: 'realtime',
-          gridLines: { display: true }, type: "time", time: { parser: "DD/MM/YYYY" },
+          //type: 'realtime',
+          gridLines: { display: true }, 
+          type: "time", 
+          time: { parser: "DD/MM/YYYY" },
           realtime: {
             refresh: 250,
             onRefresh: this.onRefresh,
-            delay: 1000
+            delay: 1000,
+            pause: pause,
           }
         }]
       }

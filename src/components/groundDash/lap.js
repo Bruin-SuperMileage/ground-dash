@@ -1,5 +1,6 @@
 import React from 'react';
-import firebase from '../../firebase.js';
+import firebase from '../../firebase';
+import 'firebase/database';
 
 class Lap extends React.Component{
      constructor(props) {
@@ -154,7 +155,6 @@ class Lap extends React.Component{
                          </div>
                     </div>
                </div>
-
           </div>
           );
      }

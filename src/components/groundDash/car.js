@@ -1,14 +1,10 @@
 import React from 'react';
-
 import Accelerometer from './accelerometer';
 import Environment from './environment';
 import HallEffect from './hall-effect'
 import Magnetometer from './magnetometer';
-//import Motor from './motor';
-//import Battery from './battery';
 import Imu from './imu';
 import Joulemeter from './joulemeter';
-//import Speed from './speed';
 
 class Car extends React.Component{
     render() {
