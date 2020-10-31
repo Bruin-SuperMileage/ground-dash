@@ -33,7 +33,7 @@ class App extends React.Component {
       speed: {},
       track: {},
       latestTimeUpdate: new Date(),
-      which: "ground",
+      which: "driver",
       labels: [],
       graphOneVals: 0,
       graphTwoVals: 0,
