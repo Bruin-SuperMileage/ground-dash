@@ -1,5 +1,6 @@
 import React from 'react';
-import firebase from '../../firebase.js'
+import firebase from '../../firebase';
+import 'firebase/database';
 
 var startTimeMilli = "";
 var convertedStart = "";

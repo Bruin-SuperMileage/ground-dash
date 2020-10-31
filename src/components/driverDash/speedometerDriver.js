@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactSpeedometer from "react-d3-speedometer"
+import ReactSpeedometer from "react-d3-speedometer";
 
 class SpeedometerDriver extends React.Component{
     render() {
