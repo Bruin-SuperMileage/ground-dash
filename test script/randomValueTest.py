@@ -100,7 +100,7 @@ while (True):
   
   db.child(trialName).child(timeName).update({
   "gps": 
-      {"latitude": my_dict['Lat'],
+      {"latitude": timeName,
       "longitude": my_dict['Lng']},
   "joulemeter": 
       {"current": my_dict['Cur'],

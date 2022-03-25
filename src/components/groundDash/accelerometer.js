@@ -6,7 +6,6 @@ class Accelerometer extends React.Component{
         var acceleration = ((this.props.accelerometer["acceleration x"]**2 + 
         this.props.accelerometer["acceleration y"]**2 +
         this.props.accelerometer["acceleration z"]**2)**0.5).toFixed(3);
-        console.log(acceleration)
         return (
           <div className="joulemeter">
                <div className="card-content">
