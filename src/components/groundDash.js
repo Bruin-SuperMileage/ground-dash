@@ -36,14 +36,14 @@ class GroundDash extends React.Component{
             />
           </div>
         </div>
-        <div className="columns">
+        {/* <div className="columns">
           <div className="column">
             <LineGraph labels={this.props.labels} vals={this.props.graphOneVals} name={name1} changeDialogState={this.props.changeDialogState} lapLabels={this.props.lapLabels} pause={this.props.pause}/>
           </div>
           <div className="column">
             <LineGraph labels={this.props.labels} vals={this.props.graphTwoVals} name={name2} changeDialogState={this.props.changeDialogStateTwo} lapLabels={this.props.lapLabels} pause={this.props.pause}/>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }

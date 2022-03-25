@@ -16,7 +16,11 @@ firebase = pyrebase.initialize_app(config)
 
 db = firebase.database()
 
-while (True):
-  trialNum = input("Trial to remove: ")
-  db.child("Trial " + trialNum).remove()
-  print("Deleted trial " + trialNum + "!")
+# while (True):
+  # trialNum = input("Trial to remove: ")
+  # db.child("Trial " + trialNum).remove()
+  # print("Deleted trial " + trialNum + "!")
+  
+for trialNum in range(200,219):
+  print("Deleted trial " + str(trialNum) + "!")
+  db.child("Trial " + str(trialNum)).remove()

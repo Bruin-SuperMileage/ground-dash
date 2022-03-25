@@ -57,6 +57,7 @@ db.update(
 
 
 while (True):
+  sleep(0.05)
   #Read in from the serial. Timeout if nothing is available
   # text = ser.readline().decode() #read in one data string
   # print(milliseconds() - start)
@@ -149,7 +150,6 @@ while (True):
   # "Latest Time": timeName, 
   # "Previous Time": previousTime})
   
-  sleep(0.3)
   # n += 1
 
 
