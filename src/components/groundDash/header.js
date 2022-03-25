@@ -17,7 +17,7 @@ class Header extends React.Component{
     );
     var today = new Date();
     var date1 = today.toDateString();
-    var cmas= new Date(2020, 3, 1);
+    var cmas= new Date(2022, 4, 9);
     var one_day=1000*60*60*24;
     var daysLeft1 = "Days to Competition: " + (Math.ceil( (cmas.getTime()-today.getTime() )/ one_day ));
     
@@ -42,14 +42,14 @@ class Header extends React.Component{
         <nav className="navbar is-fixed-top is-dark color-dark" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="https://www.bruinracing.com/smv/">
-            <h1>Bruin Racing | Super Mileage Vehicle</h1>
+            <h1>Bruin SuperMileage</h1>
           </a>
         </div>
       
         <div className="navbar-end is-hidden-touch">
-          <div className="navbar-item">
+          {/* <div className="navbar-item">
             Made by A. Nagarajan, Continued by K. Nguyen
-          </div>
+          </div> */}
           <div className="navbar-item">
             {this.state.daysLeft}
           </div>

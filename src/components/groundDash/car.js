@@ -19,7 +19,7 @@ class Car extends React.Component{
                     </div>
                     <div className="column">
                          <HallEffect halleffect={this.props.halleffect} />
-                         <Magnetometer magnetometer={this.props.magnetometer}/>
+                         {/* <Magnetometer magnetometer={this.props.magnetometer}/> */}
                          <Imu imu={this.props.imu}/>
                     </div>
                </div>

@@ -187,11 +187,11 @@ class App extends React.Component {
   render() {
     const whichOneIsIt = this.state.which;
     let button;
-    if (whichOneIsIt === "ground") {
-      button = <ToggleButton onClick={()=> this.setState({which: "driver"})} />;
-    } else if (whichOneIsIt === "driver"){
-      button = <ToggleButton onClick={()=> this.setState({which: "ground"})} />;
-    }
+    // if (whichOneIsIt === "ground") {
+    //   button = <ToggleButton onClick={()=> this.setState({which: "driver"})} />;
+    // } else if (whichOneIsIt === "driver"){
+    //   button = <ToggleButton onClick={()=> this.setState({which: "ground"})} />;
+    // }
     var changeDialogState = this.changeDialogState;
     var changeDialogStateTwo = this.changeDialogStateTwo;
     return (
