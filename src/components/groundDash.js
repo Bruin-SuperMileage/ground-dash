@@ -31,7 +31,7 @@ class GroundDash extends React.Component{
           <div className="column">
             <Track 
             gps={this.props.gps} 
-            //lap={this.props.lap} 
+            lap={this.props.lap} 
             track={this.props.track}
             />
           </div>

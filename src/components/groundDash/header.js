@@ -39,28 +39,28 @@ class Header extends React.Component{
 
   render() {
     return (
-        <nav className="navbar is-fixed-top is-dark color-dark" role="navigation" aria-label="main navigation">
+      <nav className="navbar is-fixed-top is-dark color-dark" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="https://www.bruinracing.com/smv/">
             <h1>Bruin SuperMileage</h1>
           </a>
         </div>
-      
+        
         <div className="navbar-end is-hidden-touch">
           {/* <div className="navbar-item">
-            Made by A. Nagarajan, Continued by K. Nguyen
+          Made by A. Nagarajan, Continued by K. Nguyen
           </div> */}
           <div className="navbar-item">
             {this.state.daysLeft}
           </div>
           <div className="navbar-item">
-            {this.state.date}
+          { this.state.date}
           </div>
           <div className="navbar-item">
             {this.state.time}
           </div>
         </div>
-        </nav>
+      </nav>
     );
   }
 };

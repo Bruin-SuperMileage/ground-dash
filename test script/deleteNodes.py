@@ -20,7 +20,11 @@ db = firebase.database()
   # trialNum = input("Trial to remove: ")
   # db.child("Trial " + trialNum).remove()
   # print("Deleted trial " + trialNum + "!")
-  
-for trialNum in range(200,219):
+
+
+lower = input("Lower: ")
+upper = input("Upper: ")
+
+for trialNum in range(int(lower),int(upper)):
   print("Deleted trial " + str(trialNum) + "!")
   db.child("Trial " + str(trialNum)).remove()
