@@ -17,7 +17,7 @@ class Header extends React.Component{
     );
     var today = new Date();
     var date1 = today.toDateString();
-    var cmas= new Date(2022, 4, 9);
+    var cmas= new Date(2022, 3, 9);
     var one_day=1000*60*60*24;
     var daysLeft1 = "Days to Competition: " + (Math.ceil( (cmas.getTime()-today.getTime() )/ one_day ));
     

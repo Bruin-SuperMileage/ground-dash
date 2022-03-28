@@ -10,15 +10,15 @@ class Track extends React.Component{
                     <div className="columns">
                          <div className="column">
                               <div className="card-content">
-                                   <p className="title is-4">Parking Garage</p>
+                                   <p className="title is-4">Indianapolis Motor Speedway</p>
                                    <p className="title is-6">{this.props.track["Latest Trial"]} </p>
                               </div>
                               <GPS gps={this.props.gps}/>
                          </div>
                     </div>
-                    <Lap lap={this.props.lap}/>
+                    {/* <Lap lap={this.props.lap}/> */}
                     <div className="card-image">
-                         <Controls/>
+                         {/* <Controls/> */}
                     </div>
                </div>
           );

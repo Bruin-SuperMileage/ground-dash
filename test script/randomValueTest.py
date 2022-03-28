@@ -57,7 +57,7 @@ db.update(
 
 
 while (True):
-  sleep(0.05)
+  #sleep(0.05)
   #Read in from the serial. Timeout if nothing is available
   # text = ser.readline().decode() #read in one data string
   # print(milliseconds() - start)
@@ -139,12 +139,12 @@ while (True):
       # "trial": num,
       # "temp": random.randint(0,255)},
   })
-  
+  print(timeName)
   db.update(
   {"Latest Trial": trialName,
   "Latest Time": timeName,
   "Running": "True"})
-  
+#   sleep(0.12)
   # db.update(
   # {"Latest Trial": trialName,
   # "Latest Time": timeName, 

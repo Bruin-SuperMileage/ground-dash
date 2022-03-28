@@ -12,8 +12,8 @@ function capitalize(str) {
 
 class GroundDash extends React.Component{
   render() {
-    var name1 = this.props.dialogState1.split("|")[1].split(' ').map(capitalize).join(' ');
-    var name2 = this.props.dialogState2.split("|")[1].split(' ').map(capitalize).join(' ');
+    //var name1 = this.props.dialogState1.split("|")[1].split(' ').map(capitalize).join(' ');
+    //var name2 = this.props.dialogState2.split("|")[1].split(' ').map(capitalize).join(' ');
     return (
       <div className="groundDash canvas color-dark" style={{paddingTop: '45px'}}>
         <Header/>
@@ -31,7 +31,7 @@ class GroundDash extends React.Component{
           <div className="column">
             <Track 
             gps={this.props.gps} 
-            lap={this.props.lap} 
+            //lap={this.props.lap} 
             track={this.props.track}
             />
           </div>

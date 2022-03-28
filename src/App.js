@@ -1,17 +1,125 @@
-import React from 'react';
+import React,{useState,useEffect,useReducer} from 'react';
 import firebase from './firebase';
 import 'firebase/database';
 import './App.css';
 
-// HERE IS THE WEBSITE IM USING FOR THE GRAPH EXAMPLES SUPER HELPFUL
-// https://github.com/jerairrest/react-chartjs-2/blob/master/example/src/components/line.js
-// http://jerairrest.github.io/react-chartjs-2/
-
 import ToggleButton from './components/toggleButton';
 import GroundDash from './components/groundDash';
 import DriverDash from './components/driverDash';
+import { database } from 'firebase';
 
-class App extends React.Component {
+const App = () => {
+  const [all,setAll] = useState({});
+  const [currentLap,setCurrentLap] = useState(0);
+  const [running, setRunning] = useState(false)
+  const [pause, setPause] = useState(false)
+  const [latestTime, setLatestTime] = useState("")
+  const [latestTrial, setLatestTrial] = useState("")
+  const [accelerometer, setAccelerometer] = useState(0)
+  const [environment, setEnvironment] = useState(0);
+  const [gps, setGPS] = useState(0);
+  const [halleffect, setHallEffect] = useState(0);
+  const [imu, setIMU] = useState(0);
+  const [joulemeter, setJoulemeter] = useState(0);
+  const [laptimes, setLapTimes] = useState(0);
+  const [magnetometer, setMagnetometer] = useState(0);
+  const [motor, setMotor] = useState(0);
+  const [speed, setSpeed] = useState(0);
+  const [latestData, setLatestData] = useState({})
+
+
+  // useEffect ( () => {
+  //   var setLatestTimeCycle = setInterval( () => {
+  //     firebase.database().ref("Latest Time").once('value', (snapshot) => {
+  //       setLatestTime(snapshot.val());
+  //     })
+  //     console.log("checking");
+  //   }, 500)
+  //   return () => clearInterval(setLatestTimeCycle)
+  // }, [])
+  var count = 0;
+  useEffect( ()=> {
+    // var intervalID = setInterval(() => {
+    let database = firebase.database();
+    var latestTime1;
+    database.ref("Latest Time").on('value', (snapshot) => {
+      latestTime1 = snapshot.val();
+      var latestTrial1;
+      database.ref("Latest Trial").on('value', (snapshot) => {
+        latestTrial1 = snapshot.val();
+        console.log(latestTrial1 + " " + latestTime1);
+        database.ref(latestTrial1).child(latestTime1).on('value', (snapshot) => {
+          console.log("before fetch: " + count);
+          // var all = snapshot.val();
+          console.log("after fetch: " + count);
+          // count++;
+          // setAll(snapshot.val());
+          // setCurrentLap(snapshot.val().Lap);
+          // var running1 = all["Running"];
+          // setRunning(running1);
+          // if (running1 === true) {
+            // setPause(false)
+          // }
+          //var latestTime1 = all["Latest Time"];
+          //setLatestTime(latestTime1);
+          //var latestTrial1 = all["Latest Trial"]; 
+          // setLatestTrial(latestTrial1);
+          if (snapshot.exists() === false)
+            return;
+          var latestData = snapshot.val();
+          // var exists = true;
+          // if (all[latestTrial1][latestTime1] === null)
+          //   exists = false;
+          // if (exists === true)
+          // {
+          setLatestData(latestData);
+          setAccelerometer(latestData["accelerometer"]);
+          setEnvironment(latestData["environment"]);
+          setGPS(latestData["gps"]);
+          setHallEffect(latestData["hall-effect"]);
+          setIMU(latestData["gyroscope"]);
+          setJoulemeter(latestData["joulemeter"]);
+          setLapTimes(latestData["lap times"]);
+          setMagnetometer(latestData["magnetometer"]);
+          setMotor(latestData["motor"]);
+          setSpeed(latestData["speed"]);
+          // }
+        });
+      });
+    });
+//   },100);
+//   return () => {
+//     clearInterval(intervalID);
+//   }
+    // return () => database.ref().off('value', dataChange)
+  },[latestTime])
+
+  return (
+    <div>
+      <ViewToggle props={{joulemeter: joulemeter,
+      all: all,
+      currentLap: currentLap,
+      running: running,
+      pause: pause,
+      latestTime: latestTime,
+      latestTrial: latestTrial,
+      accelerometer: accelerometer,
+      environment: environment,
+      gps: gps,
+      halleffect: halleffect,
+      imu: imu,
+      laptimes: laptimes,
+      magnetometer: magnetometer,
+      motor: motor,
+      speed: speed,
+      latestData: latestData,
+      which: "ground",
+      }} /* changeDialogState={changeDialogState} changeDialogStateTwo={changeDialogStateTwo} *//>
+    </div>
+    );
+}
+
+/* class App extends React.Component {
   constructor(props){
     super(props);
     this.changeDialogState = this.changeDialogState.bind(this);
@@ -54,6 +162,7 @@ class App extends React.Component {
   }
 
   checkDifference = () => {
+    console.log("checkdifference");
     let database = firebase.database();
     var current = new Date();
     var difference = Math.abs(this.state.latestTimeUpdate - current);
@@ -104,6 +213,9 @@ class App extends React.Component {
           let magnetometer;
           let motor;
           let speed;
+          let lapTimesExists;
+          let peakTimes;
+
           var latestData1;
           if (exists === true) {
             latestData1 = snapshot.val();
@@ -155,45 +267,12 @@ class App extends React.Component {
     this.interval = setInterval(this.checkDifference, 5000);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.latestTime !== prevState.latestTime)
-    {
-      if (this.state.pause === false)
-      {
-        var dateUpdate = new Date();
-        this.setState({latestTimeUpdate: dateUpdate})
-      }
-    }
-    if (this.state.dialogState1.split("|")[0] !== "") {
-      if (this.state.latestTime !== prevState.latestTime) {
-        var data1 = this.state.latestData;
-        var split1 = this.state.dialogState1.split("|");
-        this.setState({
-          graphOneVals: data1[split1[0]][split1[1]],
-        })
-      }
-    }
-    if (this.state.dialogState2.split("|")[0] !== "") {
-      if (this.state.latestTime !== prevState.latestTime) {
-        var data2 = this.state.latestData;
-        var split2 = this.state.dialogState2.split("|");
-        this.setState({
-          graphTwoVals: data2[split2[0]][split2[1]],
-        })
-      }
-    }
-  }
-
   render() {
     const whichOneIsIt = this.state.which;
     let button;
-    // if (whichOneIsIt === "ground") {
-    //   button = <ToggleButton onClick={()=> this.setState({which: "driver"})} />;
-    // } else if (whichOneIsIt === "driver"){
-    //   button = <ToggleButton onClick={()=> this.setState({which: "ground"})} />;
-    // }
     var changeDialogState = this.changeDialogState;
     var changeDialogStateTwo = this.changeDialogStateTwo;
+    
     return (
       <div>
         <ViewToggle props={this} changeDialogState={changeDialogState} changeDialogStateTwo={changeDialogStateTwo}/>
@@ -201,11 +280,12 @@ class App extends React.Component {
       </div>
       );
   }
-}
+} */
 
 export default App;
 
 function ViewToggle(props) {
+  //console.log(props)
   let {which,
     joulemeter,
     environment,
@@ -221,7 +301,7 @@ function ViewToggle(props) {
     dialogState1,
     dialogState2,
     lapLabels,
-    pause,}  = props.props.state;
+    pause,}  = props.props;
     var changeDialogState = props.changeDialogState;
     var changeDialogStateTwo = props.changeDialogStateTwo;
   if (which === "ground") {
