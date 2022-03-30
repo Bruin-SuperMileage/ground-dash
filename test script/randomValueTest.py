@@ -139,7 +139,7 @@ while (True):
       # "trial": num,
       # "temp": random.randint(0,255)},
   })
-  print(timeName)
+#   print(timeName)
   db.update(
   {"Latest Trial": trialName,
   "Latest Time": timeName,

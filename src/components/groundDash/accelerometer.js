@@ -10,11 +10,11 @@ class Accelerometer extends React.Component{
           <div className="joulemeter">
                <div className="card-content">
                     <p className="title is-5">Accelerometer</p>
-                    <p className="subtitle is-6">Acceleration X: {this.props.accelerometer["acceleration x"]} m/s²</p>
-                    <p className="subtitle is-6">Acceleration Y: {this.props.accelerometer["acceleration y"]} m/s²</p>
-                    <p className="subtitle is-6">Acceleration Z: {this.props.accelerometer["acceleration z"]} m/s²</p>
-                    <p className="subtitle is-6">Acceleration: {acceleration} m/s²</p>
-               </div>
+                    <p className="subtitle is-6">Acceleration X: {this.props.accelerometer["acceleration x"]} g</p>
+                    <p className="subtitle is-6">Acceleration Y: {this.props.accelerometer["acceleration y"]} g</p>
+                    <p className="subtitle is-6">Acceleration Z: {this.props.accelerometer["acceleration z"]} g</p>
+                    <p className="subtitle is-6">Acceleration: {acceleration} g</p>
+               </div>h
           </div>
         );
      }
