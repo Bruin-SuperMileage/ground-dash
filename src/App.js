@@ -26,7 +26,7 @@ const App = () => {
   const [motor, setMotor] = useState(0);
   const [speed, setSpeed] = useState(0);
   const [latestData, setLatestData] = useState({})
-  
+
   // const [latestTimeUpdate, setLatestTimeUpdate] = useState("")
 
   // setInterval(() => {
@@ -48,8 +48,10 @@ const App = () => {
     database.ref("Latest Time").on('value', (snapshot) => {
       latestTime1 = snapshot.val();
       var latestTrial1;
+      setLatestTime(latestTime1);
       database.ref("Latest Trial").on('value', (snapshot) => {
         latestTrial1 = snapshot.val();
+        setLatestTrial(latestTrial1);
         database.ref(latestTrial1).child(latestTime1).on('value', (snapshot) => {
           if (snapshot.exists() === false)
             return;
@@ -113,7 +115,8 @@ function ViewToggle(props) {
     dialogState1,
     dialogState2,
     lapLabels,
-    pause,}  = props.props;
+    pause,
+    latestTrial}  = props.props;
     var changeDialogState = props.changeDialogState;
     var changeDialogStateTwo = props.changeDialogStateTwo;
   if (which === "ground") {
@@ -136,6 +139,7 @@ function ViewToggle(props) {
       dialogState2={dialogState2}
       lapLabels={lapLabels}
       pause={pause}
+      latestTrial={latestTrial}
        />
   }
   else if (which === "driver" ) {

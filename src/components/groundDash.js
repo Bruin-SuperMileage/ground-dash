@@ -33,6 +33,7 @@ class GroundDash extends React.Component{
             gps={this.props.gps} 
             lap={this.props.lap} 
             track={this.props.track}
+            latestTrial={this.props.latestTrial}
             />
           </div>
         </div>
