@@ -27,16 +27,17 @@ class GroundDash extends React.Component{
             imu={this.props.imu} 
             accelerometer={this.props.accelerometer} 
             halleffect={this.props.halleffect}
-            motor = {this.props.motor} />
+            motor = {this.props.motor} 
+            gps={this.props.gps}/>
           </div>
-          <div className="column">
+          {/* <div className="column">
             <Track 
             gps={this.props.gps} 
             lap={this.props.lap} 
             track={this.props.track}
             latestTrial={this.props.latestTrial}
             />
-          </div>
+            </div> */}
         </div>
         {/* <div className="columns">
           <div className="column">
