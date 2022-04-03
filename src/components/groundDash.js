@@ -26,7 +26,8 @@ class GroundDash extends React.Component{
             magnetometer={this.props.magnetometer} 
             imu={this.props.imu} 
             accelerometer={this.props.accelerometer} 
-            halleffect={this.props.halleffect} />
+            halleffect={this.props.halleffect}
+            motor = {this.props.motor} />
           </div>
           <div className="column">
             <Track 

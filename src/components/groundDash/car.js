@@ -2,7 +2,7 @@ import React from 'react';
 import Accelerometer from './accelerometer';
 import Environment from './environment';
 import HallEffect from './hall-effect'
-import Magnetometer from './magnetometer';
+import Motor from './motor';
 import Imu from './imu';
 import Joulemeter from './joulemeter';
 
@@ -20,6 +20,7 @@ class Car extends React.Component{
                     <div className="column">
                          <HallEffect halleffect={this.props.halleffect} />
                          {/* <Magnetometer magnetometer={this.props.magnetometer}/> */}
+                         <Motor motor={this.props.motor}/>
                          <Imu imu={this.props.imu}/>
                     </div>
                </div>

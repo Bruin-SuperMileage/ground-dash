@@ -23,7 +23,7 @@ const App = () => {
   const [joulemeter, setJoulemeter] = useState(0);
   const [laptimes, setLapTimes] = useState(0);
   const [magnetometer, setMagnetometer] = useState(0);
-  const [motor, setMotor] = useState(0);
+  const [motor, setMotor] = useState({});
   const [speed, setSpeed] = useState(0);
   const [latestData, setLatestData] = useState({})
 
@@ -65,7 +65,7 @@ const App = () => {
           setJoulemeter(latestData["joulemeter"]);
           setLapTimes(latestData["lap times"]);
           setMagnetometer(latestData["magnetometer"]);
-          setMotor(latestData["motor"]);
+          setMotor(latestData["motorController"]);
           setSpeed(latestData["speed"]);
         });
       });
@@ -116,6 +116,7 @@ function ViewToggle(props) {
     dialogState2,
     lapLabels,
     pause,
+    motor,
     latestTrial}  = props.props;
     var changeDialogState = props.changeDialogState;
     var changeDialogStateTwo = props.changeDialogStateTwo;
@@ -140,6 +141,7 @@ function ViewToggle(props) {
       lapLabels={lapLabels}
       pause={pause}
       latestTrial={latestTrial}
+      motor={motor}
        />
   }
   else if (which === "driver" ) {
