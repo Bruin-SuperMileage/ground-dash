@@ -70,7 +70,7 @@ const App = () => {
         });
       });
     });
-  },[latestTime])
+  },[])
 
   return (
     <div>
@@ -117,6 +117,7 @@ function ViewToggle(props) {
     lapLabels,
     pause,
     motor,
+    latestTime,
     latestTrial}  = props.props;
     var changeDialogState = props.changeDialogState;
     var changeDialogStateTwo = props.changeDialogStateTwo;
@@ -142,6 +143,7 @@ function ViewToggle(props) {
       pause={pause}
       latestTrial={latestTrial}
       motor={motor}
+      latestTime={latestTime}
        />
   }
   else if (which === "driver" ) {

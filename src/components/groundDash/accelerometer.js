@@ -14,7 +14,7 @@ class Accelerometer extends React.Component{
                     <p className="subtitle is-6">Acceleration Y: {this.props.accelerometer["acceleration y"]} g</p>
                     <p className="subtitle is-6">Acceleration Z: {this.props.accelerometer["acceleration z"]} g</p>
                     <p className="subtitle is-6">Acceleration: {acceleration} g</p>
-               </div>h
+               </div>
           </div>
         );
      }
